@@ -44,10 +44,19 @@ public class JdbcProfileDao implements ProfileDao{
             profiles.add(mapRowToProfile(rowset));
         }
 
-        System.out.println(profiles.get(0).getProfilePictureBase64());
-
         return profiles;
     }
+
+    @Override
+    public int addProfile(Profile profile) {
+        String sql = "INSERT INTO profile (username, url, profile_picture_base_64, is_secretary, owners_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?) RETURNING profile_id;";
+        return jdbcTemplate.queryForObject(sql, int.class, profile.getUsername(), profile.getUrl(), profile.getProfilePictureBase64(), profile.isSecretary(), profile.getOwnersUrl());
+    }
+
+    //get
+    //put
+    //update
     //delete
 
     private Profile mapRowToProfile (SqlRowSet rowSet) {

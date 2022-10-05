@@ -2,6 +2,7 @@ package twitterBot.model;
 
 import java.io.File;
 import java.util.BitSet;
+//What methods do I need here? One for each screenshot
 
 public class Profile {
 
@@ -13,6 +14,7 @@ public class Profile {
     private String profilePictureBase64;
     private boolean isSecretary;
     private String ownersUrl;
+    private int test = 1000;
 
     public Profile () {}
 
@@ -62,5 +64,9 @@ public class Profile {
 
     public void setOwnersUrl(String ownersUrl) {
         this.ownersUrl = ownersUrl;
+    }
+
+    public int getTest() {
+        return test;
     }
 }

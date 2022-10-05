@@ -8,4 +8,6 @@ public interface ProfileDao {
 
     public List<Profile> getAllProfiles();
 
+    public int addProfile(Profile profile);
+
 }
