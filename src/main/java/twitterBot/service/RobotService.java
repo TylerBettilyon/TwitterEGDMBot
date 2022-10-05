@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
+
+
 //Lord and savior came in clutch for the screenshot to base64 conversion
 import org.apache.commons.codec.binary.Base64OutputStream;
 import twitterBot.model.Profile;
@@ -19,6 +21,8 @@ import java.util.List;
 
 
 public class RobotService{
+
+    //Rectangle for pfp should be 40x40
 
     public RobotService() throws AWTException {}
     private JdbcProfileDao jdbcProfileDao;
@@ -44,7 +48,14 @@ public class RobotService{
     }
 
     // Use this to check whether we get profile or create profile in database!
-    public boolean ProfilePictureDoesExistInDatabase(BufferedImage screenshot){
+    public boolean ProfilePictureDoesExistInDatabase(BufferedImage screenshot) throws IOException{
+        List<Profile> profiles = jdbcProfileDao.getAllProfiles();
+
+        for (Profile profile : profiles) {
+            if (profile.getProfilePictureBase64().equals(convertScreenshotToBase64(screenshot))) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -82,13 +93,16 @@ public class RobotService{
         Toolkit t = Toolkit.getDefaultToolkit();
         Dimension screenSize = t.getScreenSize();
         Rectangle screen = new Rectangle(screenSize.width, screenSize.height);
-        Rectangle dmScreen = new Rectangle(screen.width - 420, screen.height - 530,420, 530);
+        Rectangle dmScreen = new Rectangle(screen.width - 435, screen.height - 570,400, 530);
+        //This is the x and y for a pfp in dm groups!!
+        Rectangle dmProfilePicture = new Rectangle(screen.width - 421, screen.height - 517, 40, 40);
         robot.delay(5000);
-        BufferedImage dmScreenshot = robot.createScreenCapture(dmScreen);
+        BufferedImage dmScreenshot = robot.createScreenCapture(dmProfilePicture);
         ImageIO.write(dmScreenshot, "png", new File("C:\\Users\\Student\\workspace\\TwitterEGDMBot\\src\\main\\java\\twitterBot\\screenshot\\dm.png"));
 
         //This moves the mouse to the corner of the dm screen! Progress (:
-        //robot.mouseMove(screen.width - 420, screen.height - 530);
+        //530 for dm screenshot, 40 for bottom layer
+        //robot.mouseMove(screen.width - 420, screen.height - 570);
         //robot.mouseMove(0,0);
         System.out.println(screen.width);
     }
